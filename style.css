@@ -1,0 +1,71 @@
+@import "fonts/luzsans/luzsans.css";
+
+body {
+  margin: 0;
+  padding: 0.5em;
+  background-color: #efefef;
+}
+
+svg {
+  border: 0.5em solid #ccc;
+  float: left;
+  margin-left: 0.5em;
+}
+
+/* CONTROLS */
+#controls {
+  float: left;
+  width: 10em;
+  background-color: #555;
+  user-select: none;
+}
+
+.part-select .part {
+  display: block;
+  margin: 0.5em;
+  padding: 0.5em;
+  color: white;
+  opacity: 0.3;
+  user-select: none;
+}
+.part-select .part.active {
+  opacity: 1;
+}
+
+.layout-select {
+  margin: 0 1em;
+}
+
+.layout-select .layout-option {
+  display: inline-block;
+  margin: 0.5em 0;
+  padding: 0.5em;
+  background-color: #333;
+  color: white;
+  opacity: 0.3;
+  user-select: none;
+}
+.layout-select .layout-option.active {
+  opacity: 1;
+}
+
+/* VIZ */
+.label circle {
+  fill: #fff;
+  fill-opacity: 0.5;
+  stroke: #555;
+  stroke-width: 2;
+  stroke-opacity: 0.8;
+}
+
+.label text {
+  fill: #555;
+  fill-opacity: 0.8;
+  font-family: 'LuzSans', sans-serif;
+  font-weight: bold;
+}
+
+.slice path {
+  stroke: #555;
+  stroke-width: 2;
+}
