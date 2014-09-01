@@ -1,3 +1,4 @@
-node_modules
-fonts
 .DS_Store
+node_modules/
+fonts/
+scripts/vendor/
