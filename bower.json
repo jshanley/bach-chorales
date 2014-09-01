@@ -1,0 +1,24 @@
+{
+  "name": "bach-chorales",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jshanley/bach-chorales",
+  "authors": [
+    "John Shanley <john.michael.shanley@gmail.com>"
+  ],
+  "description": "A collection of visualizations of chorales by J.S. Bach",
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "scripts/vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "d3": "~3.4.11"
+  }
+}

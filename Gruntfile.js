@@ -18,16 +18,26 @@ module.exports = function(grunt) {
         files: '*.html'
       },
       js: {
-        files: '*.js'
+        files: 'scripts/**/*.js'
       },
       css: {
         files: '*.css'
       }
+    },
+
+    smash: {
+      together: {
+        src: 'scripts/bwv/index.js',
+        dest: 'scripts/bwv-bundled.js'
+      }
     }
+
   });
 
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-smash');
 
-  grunt.registerTask('default', ['connect', 'watch']);
+  grunt.registerTask('default', ['smash', 'connect', 'watch']);
+  grunt.registerTask('build', ['smash'])
 };
