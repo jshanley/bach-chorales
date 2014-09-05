@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>LineChart Test</title>
+  <script src="../scripts/vendor/jquery/dist/jquery.js"></script>
+  <script src="../scripts/vendor/d3/d3.js"></script>
+  <script src="../scripts/d3-elapsed.js"></script>
+  <script src="../scripts/bwv-bundled.js"></script>
+  <script src="../scripts/bwv/line-chart.js"></script>
+</head>
+<body>
+  <style>
+   body {
+     background-color: #efefef;
+   }
+   svg {
+     border: 1px solid #ccc;
+   }
+  </style>
+
+  <script>
+
+    var w = 800,
+        h = 300;
+
+    var margin = {top:10,right:10,bottom:24,left:24}
+
+    var svg = d3.select('body').append('svg')
+      .attr('width', margin.left + w + margin.right)
+      .attr('height', margin.top + h + margin.bottom)
+      .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+    var lineChart = BWV.lineChart()
+      .width(w)
+      .height(h);
+
+    d3.xml('../xml/000106B_.xml', function(xml) {
+      var notes = BWV.getNotesFromXML(xml);
+      visualize(notes)
+    })
+
+    function visualize(notes) {
+      svg.append('g')
+        .attr('class', 'bwv-line-chart')
+        .datum(notes)
+        .call(lineChart);
+    }
+
+  </script>
+</body>
+</html>
