@@ -139,6 +139,8 @@ console.clear();
         };
       });
 
+    var svg2 = d3.select('body').append('svg').datum(notes).call(jsb_line_chart())
+
     function handleOptionChange() {
 
       var selectedLayout = d3.select('.layout-option.active').text();
