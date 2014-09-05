@@ -1,1 +1,1 @@
-var BWV = {};
+var bwv = {};

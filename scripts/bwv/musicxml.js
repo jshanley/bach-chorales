@@ -1,58 +1,92 @@
-BWV.musicxml = {};
+bwv.musicxml = {};
 
-BWV.musicxml.getPartList = function(xml) {
-  return d3.select(xml).select('part-list')
-    .selectAll('score-part')[0].map(function(d) {
-      var part = d3.select(d);
-      return {
-        id: part.attr('id'),
-        name: part.select('part-name').text()
-      };
-    });
+d3.selection.prototype.getChildText = function(tag, defaultValue) {
+  var sel = this.select(tag);
+  return sel.empty() ? defaultValue : sel.text();
 }
 
-BWV.musicxml.getAllNotes = function(xml) {
+bwv.musicxml.getPartList = function(xml) {
+  var scorePartNodes = d3.select(xml)
+    .select('part-list')
+    .selectAll('score-part')[0];
 
-  var notes = d3.select(xml).selectAll('note')[0]
-    .filter(function(d) {
-      // FILTER OUT RESTS
-      return d3.select(d).selectAll('rest').empty();
-    })
-    .map(function(d) {
-      var part = d3.select(d.parentNode.parentNode).attr('id'),
-          measure = d3.select(d.parentNode).attr('number'),
-          duration = d3.select(d).select('duration').text(),
-          pitch = d3.select(d).select('pitch'),
-          step = pitch.select('step').text(),
-          octave = pitch.select('octave').text();
-      var alter = 0;
-      if (!pitch.select('alter').empty()) {
-        alter = pitch.select('alter').text();
+  var scoreParts = scorePartNodes.map(function(part) {
+      var _part = d3.select(part);
+      return {
+        id: _part.attr('id'),
+        name: _part.getChildText('part-name')
+      };
+    });
+  return scoreParts;
+}
+
+// THIS IS WHERE THE MAGIC HAPPENS, MAN IT'S UGLY
+bwv.musicxml.getNoteArray = function(xml) {
+
+  var partNodes = d3.select(xml).selectAll('part')[0];
+  var parts = partNodes.map(function(part) {
+    var _part = d3.select(part);
+
+    // reset these values for each part
+    var divisions,
+        beats,
+        beat_type,
+        fifths,
+        mode;
+
+    var measureNodes = _part.selectAll('measure')[0];
+    var measures = measureNodes.map(function(measure) {
+      var _measure = d3.select(measure);
+      var hasAttributes = !_measure.selectAll('attributes').empty();
+      if (hasAttributes) {
+        var attributes = _measure.select('attributes');
+        divisions = +attributes.getChildText('divisions', divisions);
+        beats     = +attributes.getChildText('beats', beats);
+        beat_type = +attributes.getChildText('beat-type', beat_type);
+        fifths    = +attributes.getChildText('fifths', fifths);
+        mode      = attributes.getChildText('mode', mode);
       }
+      // reset elapsed time for each measure
+      var elapsed = 0;
 
-      var midi = BWV.getMidiNoteNumber(step, +octave, +alter);
+      var noteNodes = _measure.selectAll('note')[0];
+      var notes = noteNodes.map(function(note) {
+        var _note = d3.select(note);
+        var isRest = !_note.selectAll('rest').empty();
+        var duration = +_note.getChildText('duration', '0') / divisions;
+        elapsed += duration;
+        var step = _note.getChildText('step', 'R'),
+            octave = +_note.getChildText('octave', 0),
+            alter = +_note.getChildText('alter', 0);
+
+        return {
+          type: isRest ? 'rest' : 'note',
+          start: elapsed - duration,
+          duration: duration,
+          step: step,
+          octave: octave,
+          alter: alter,
+          name: bwv.getNoteName(step, alter)
+        };
+      }); // END notes
 
       return {
-        part: part,
-        measure: +measure,
-        duration: +duration,
-        name: BWV.getNoteName(step, +alter),
-        midi: midi,
-        pitchClass: midi % 12
+        number: _measure.attr('number'),
+        divisions: divisions,
+        beats: beats,
+        beat_type: beat_type,
+        fifths: fifths,
+        mode: mode,
+        notes: notes
       };
-    });
+    }); // END measures
 
-  return notes;
+    return {
+      id: _part.attr('id'),
+      measures: measures
+    };
+  }); // END parts
 
-}
+  return parts;
 
-BWV.musicxml.getNoteArray = function(xml) {
-  var parts = d3.select(xml).selectAll('part')[0];
-  var byPart = parts.map(function(part) {
-    var measures = d3.select(part).selectAll('measure')[0];
-    var byMeasure = measures.map(function(measure) {
-      var hasAttributes = !d3.select(measure).selectAll('attributes').empty();
-      console.log("Measure", d3.select(measure).attr('number'), hasAttributes)
-    })
-  })
 }

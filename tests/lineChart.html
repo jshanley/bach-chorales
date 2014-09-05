@@ -5,7 +5,6 @@
   <title>LineChart Test</title>
   <script src="../scripts/vendor/jquery/dist/jquery.js"></script>
   <script src="../scripts/vendor/d3/d3.js"></script>
-  <script src="../scripts/d3-elapsed.js"></script>
   <script src="../scripts/bwv-bundled.js"></script>
   <script src="../scripts/bwv/line-chart.js"></script>
 </head>
@@ -32,12 +31,12 @@
       .append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-    var lineChart = BWV.lineChart()
+    var lineChart = bwv.lineChart()
       .width(w)
       .height(h);
 
     d3.xml('../xml/000106B_.xml', function(xml) {
-      var notes = BWV.getNotesFromXML(xml);
+      var notes = bwv.getNotesFromXML(xml);
       visualize(notes)
     })
 

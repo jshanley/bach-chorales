@@ -1,10 +1,10 @@
-BWV.commonNoteNames = ['C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B'];
+bwv.commonNoteNames = ['C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B'];
 
-BWV.getMidiNoteNumber = function(step, octave, alter) {
-  return BWV.commonNoteNames.indexOf(step) + ((octave + 1) * 12) + alter;
+bwv.getMidiNoteNumber = function(step, octave, alter) {
+  return bwv.commonNoteNames.indexOf(step) + ((octave + 1) * 12) + alter;
 }
 
-BWV.alterToAccidental = function(alter) {
+bwv.alterToAccidental = function(alter) {
   var a = 0,
       accidental = '';
 
@@ -23,6 +23,6 @@ BWV.alterToAccidental = function(alter) {
   return accidental;
 }
 
-BWV.getNoteName = function(step, alter) {
-  return step + BWV.alterToAccidental(alter);
+bwv.getNoteName = function(step, alter) {
+  return step + bwv.alterToAccidental(alter);
 }
