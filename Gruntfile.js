@@ -15,10 +15,14 @@ module.exports = function(grunt) {
         livereload: true
       },
       html: {
-        files: '*.html'
+        files: ['*.html','tests/*.html']
       },
       js: {
         files: 'scripts/**/*.js'
+      },
+      bwv: {
+        files: 'scripts/bwv/**/*.js',
+        tasks: ['smash']
       },
       css: {
         files: '*.css'
